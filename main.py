@@ -53,6 +53,15 @@ YDL_OPTS_BASE = {
     "nocheckcertificate": True,   # fixes SSL errors on Windows
 }
 
+# YouTube frequently blocks requests from cloud/datacenter IPs with a
+# "Sign in to confirm you're not a bot" error. Supplying cookies from a
+# real logged-in browser session works around this. If a cookies file is
+# present (mounted as a Render "Secret File", or via the COOKIES_FILE env
+# var), use it automatically.
+COOKIES_FILE = os.environ.get("COOKIES_FILE", "/etc/secrets/cookies.txt")
+if os.path.exists(COOKIES_FILE):
+    YDL_OPTS_BASE["cookiefile"] = COOKIES_FILE
+
 
 # ─── Routes ───────────────────────────────────────────────────────────────────
 
