@@ -57,10 +57,16 @@ YDL_OPTS_BASE = {
 # "Sign in to confirm you're not a bot" error. Supplying cookies from a
 # real logged-in browser session works around this. If a cookies file is
 # present (mounted as a Render "Secret File", or via the COOKIES_FILE env
-# var), use it automatically.
-COOKIES_FILE = os.environ.get("COOKIES_FILE", "/etc/secrets/cookies.txt")
-if os.path.exists(COOKIES_FILE):
-    YDL_OPTS_BASE["cookiefile"] = COOKIES_FILE
+# var), use it automatically. Render mounts secret files read-only, but
+# yt-dlp needs to write updated cookies back after use, so copy it to a
+# writable location first.
+import shutil as _shutil
+
+_SOURCE_COOKIES = os.environ.get("COOKIES_FILE", "/etc/secrets/cookies.txt")
+if os.path.exists(_SOURCE_COOKIES):
+    _writable_cookies = os.path.join(tempfile.gettempdir(), "cookies.txt")
+    _shutil.copy(_SOURCE_COOKIES, _writable_cookies)
+    YDL_OPTS_BASE["cookiefile"] = _writable_cookies
 
 
 # ─── Routes ───────────────────────────────────────────────────────────────────
