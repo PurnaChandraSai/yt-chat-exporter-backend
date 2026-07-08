@@ -81,9 +81,13 @@ async def stream_info(video_id: str):
     loop = asyncio.get_event_loop()
 
     def _fetch():
-        opts = {**YDL_OPTS_BASE, "skip_download": True}
+        opts = {**YDL_OPTS_BASE, "skip_download": True, "ignore_no_formats_error": True}
         with yt_dlp.YoutubeDL(opts) as ydl:
-            return ydl.extract_info(url, download=False)
+            # process=False skips format resolution entirely — we only need
+            # metadata (title/channel/thumbnail/viewer count), not a
+            # downloadable format, and some live/restricted videos have no
+            # resolvable format which would otherwise raise here.
+            return ydl.extract_info(url, download=False, process=False)
 
     try:
         info = await loop.run_in_executor(None, _fetch)
