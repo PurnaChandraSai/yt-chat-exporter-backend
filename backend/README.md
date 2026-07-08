@@ -60,18 +60,6 @@ Error events look like:
 
 ---
 
-## Deploy Free on Render
-
-1. Push the `backend/` folder to a GitHub repo.
-2. Go to [render.com](https://render.com) → **New Web Service**.
-3. Connect your repo, set:
-   - **Runtime:** Python 3
-   - **Build command:** `pip install -r requirements.txt`
-   - **Start command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
-4. Click **Deploy**. You'll get a URL like `https://yt-chat-api.onrender.com`.
-5. In `frontend/src/utils/api.js`, set `BACKEND_URL` to your Render URL.
-
----
 
 ## Notes
 
