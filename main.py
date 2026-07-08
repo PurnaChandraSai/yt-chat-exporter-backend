@@ -176,6 +176,7 @@ async def stream_chat(video_id: str, max_messages: int = 0):
                 opts = {
                     **YDL_OPTS_BASE,
                     "skip_download": True,
+                    "ignore_no_formats_error": True,
                     "writesubtitles": True,
                     "writeautomaticsub": True,
                     "subtitleslangs": ["live_chat"],
